@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Single Product Page</title>
+    <link rel="stylesheet" href="productcss.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+  </head>
+
+  <script src="data.js"></script>
+
+  <body>
+    <nav id="navbar" style="background-color: white">
+      <div id="leftnav">
+        <button id="btn">Shop</button>
+        <button id="btn">About</button>
+        <button id="icon">
+          <span class="material-symbols-outlined"> search </span>
+        </button>
+      </div>
+
+      <div id="midnav">
+        <img
+          src="https://store.figma.com/cdn/shop/t/25/assets/logo-full.static.svg?v=89107020529489074251721752367"
+          alt=""
+        />
+      </div>
+
+      <div id="rightnav">
+        <button id="icon">
+          <span class="material-symbols-outlined"> person </span>
+        </button>
+        <button id="btn">Cart 0</button>
+      </div>
+    </nav>
+
+    <div class="product-page">
+      <div class="product-images">
+        <div class="image-thumbnails" id="thumbnails"></div>
+        <div class="main-image">
+          <img
+            src=""
+            width="4000"
+            height="5997"
+            loading="lazy"
+            class="featured-image"
+            id="main-image"
+          />
+        </div>
+      </div>
+      <div class="product-details">
+        <div class="layers">
+          <h1>Layers</h1>
+        </div>
+        <h1 id="title"></h1>
+
+        <div class="size-guide">
+          <div class="sizes">
+            <span>S</span>
+            <span>M</span>
+            <span>L</span>
+            <span>XL</span>
+            <span>2XL</span>
+          </div>
+          <div class="quantity">
+            <button>-</button>
+            <span>1</span>
+            <button>+</button>
+          </div>
+        </div>
+        <button class="add-to-cart" id="price">$99</button>
+        <p class="description" id="description">Product description goes here.</p>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer style="background-color: #c7b9ff">
+      <div class="footer-container">
+        <div class="footer-main">
+          <div class="footer-left">
+            <div class="footer-shape" style="background-color: #ffc700">
+              THE <br />
+              FIGMA <br />
+              STORE
+            </div>
+          </div>
+          <div class="footer-center">
+            <p>
+              OBJECTS <br />
+              THAT <br />
+              INSPIRE.
+            </p>
+          </div>
+          <div class="footer-center">
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-social">
+          <a href="#">FIGMA ↗</a>
+          <a href="#">TWITTER</a>
+          <a href="#">INSTAGRAM</a>
+          <a href="#">YOUTUBE</a>
+        </div>
+        <div class="topBtn">
+          <a href="#"><button class="scroll-top">↑</button></a>
+        </div>
+      </div>
+      <div class="footer-bottom" style="background-color: #c7b9ff">
+        <marquee behavior="scroll" direction="left" scrollamount="10">
+          ⏳ OUR ⬛ TIME ~ ON ⎼ FIGMA'S ⎼ MARVELOUSLY ⬤ CONSIDERED ⏳ COLLECTION
+          ⏳ OF ⬛ OBJECTS ⬤ FOR ⏳
+        </marquee>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+  <script>
+    let url = new URL(window.location.href);
+    let type = url.searchParams.get("type");
+    let id = url.searchParams.get("id");
+
+    const container = document.getElementById("thumbnails");
+    const product = data.products[0][type].find(
+      (product) => product.id === parseInt(id)
+    );
+
+    document.getElementById("title").innerText = product.title;
+    document.getElementById("description").innerText = product.description;
+
+    const priceElement = document.getElementById("price");
+    if(product.quantity > 0){
+      priceElement.innerText = `$${product.price}`;
+      priceElement.disabled = false;
+      priceElement.onclick = () => {
+        window.location.href = "/success.html";
+      };
+    } else {
+      priceElement.innerText = "Out of Stock";
+      priceElement.disabled = true;
+    }
+
+    const thumbnails = product.images
+      .map(
+        (image) =>
+          `<img src="${image}" alt="Thumbnail 1" onClick="setImage('${image}')" class="thumbnail" />`
+      )
+      .join("");
+
+    container.innerHTML = thumbnails;
+
+    function setImage(src) {
+      document.getElementById("main-image").src = src;
+    }
+
+    setImage(product.images[0]);
+  </script>
+</html>
